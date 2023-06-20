@@ -7,21 +7,21 @@ install.packages("glm2")
 # Load the required library
 library(glm2)
 
-data <- read_csv("C:/Users/omhai/OneDrive/Documents/GitHub/Dashboard-for-Power-Outage-Forecasts-for-an-Emergency-Response-to-Hurricanes/regression_df_dif.csv")
+data <- read_csv("C:/Users/omhai/OneDrive/Documents/GitHub/Dashboard-for-Power-Outage-Forecasts-for-an-Emergency-Response-to-Hurricanes/reg_out.csv")
 
 # Rename the "_mean" column to "mean_value"
-colnames(data)[colnames(data) == "_mean"] <- "mean_value"
+# colnames(data)[colnames(data) == "_mean"] <- "mean_value"
 
 # Remove rows with NA/NaN/Inf in the mean_value column
-data <- data[!is.na(data$mean_value) & is.finite(data$mean_value), ]
+data <- data[!is.na(data$outage) & is.finite(data$outage), ]
 
-data<- data[data$dif_nightlight > 0, ]
+#data<- data[data$dif_nightlight > 0, ]
 
 shape <- dim(data)
 print(shape)
 
 # Create the formula with "mean_value" as the dependent variable and specific column names
-formula <- as.formula("dif_nightlight ~ HISTO_0 + HISTO_1 + HISTO_5 + HISTO_6 + HISTO_8 + HISTO_10 + HISTO_14 + HISTO_15 + HISTO_16 + HISTO_17 + HISTO_18 + Vmax + nightlight_prev + Rainfall")
+formula <- as.formula("outage ~ HISTO_0 + HISTO_1 + HISTO_5 + HISTO_6 + HISTO_8 + HISTO_10 + HISTO_14 + HISTO_15 + HISTO_16 + HISTO_17 + HISTO_18 + Vmax + nightlight_prev + Rainfall")
 
 # Perform quasi-Poisson regression
 qp_model <- glm(formula, data = data, family = quasipoisson(link = "log"))
